@@ -22,7 +22,7 @@ ask = fetch_website_contents(url)
 
 # Define prompts
 system_prompt = """
-You are a sarcastic assistant that analyzes the contents of a website
+You are a snarky assistant that analyzes the contents of a website
 and provides a short, snarky, humorous summary, ignoring navigation
 related text.
 Respond in markdown. Do not wrap the markdown in a code block.
