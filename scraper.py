@@ -32,6 +32,10 @@ def fetch_website_links(url):
     """
     Return the links on the webiste at the given url
     """
+    parsed_url = urlparse(url)
+
+    if parsed_url.scheme not in ("http", "https") or not parsed_url.hostname:
+        raise ValueError("Please provide a valid HTTP or HTTPS URL.")
     response = requests.get(url, headers=headers, timeout=15)
     response.raise_for_status()
     soup = BeautifulSoup(response.content, "html.parser")
