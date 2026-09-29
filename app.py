@@ -26,8 +26,14 @@ summarize_button = st.button(
 
 if summarize_button:
     if url.strip():
-        website_content = fetch_website_contents(url.strip())
-        summary = summarize_website(website_content)
-        st.markdown(summary)
+        try:
+            with st.spinner("Fetching website and generating summary..."):
+                website_content = fetch_website_contents(url.strip())
+                summary = summarize_website(website_content)
+                st.markdown(summary)
+
+        except Exception as e:
+            st.error(f"Something went wrong: {e}")
+
     else:
         st.warning("Please enter a website URL.")
