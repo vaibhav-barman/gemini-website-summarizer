@@ -1,47 +1,21 @@
-import os
-from google import genai
-from google.genai import types
-from dotenv import load_dotenv
 from scraper import fetch_website_contents
+from summarizer import summarize_website
 
-load_dotenv(override=True)
-api_key = os.getenv("GEMINI_API_KEY")
+def main():
+    url = input("Enter a URL: ").strip()
 
-if not api_key:
-    raise ValueError("No API key was found!")
-elif api_key.strip() != api_key:
-    raise ValueError("API key contains leading or trailing whitespace.")
-else:
-    print("API key found and looks good so far!")
+    if not url:
+        print("Please enter a website URL.")
+        return
 
-client = genai.Client(api_key=api_key)
+    # Fetch website content
+    website_content = fetch_website_contents(url)
 
-# Fetch website contents
-url = input("Enter URL: ").strip()
-ask = fetch_website_contents(url)
+    # Generate the summary
+    summary = summarize_website(website_content)
 
-# Define prompts
-system_prompt = """
-You are a snarky assistant that analyzes the contents of a website
-and provides a short, snarky, humorous summary, ignoring navigation
-related text.
-Respond in markdown. Do not wrap the markdown in a code block.
-"""
+    # Display the summary
+    print(summary)
 
-user_prompt_prefix = """
-Here are the contents of a website.
-Provide a short summary of this website.
-If it includes news or announcements, summarize these too.
-
-"""
-
-# Generate the summary
-response = client.models.generate_content(
-    model="gemini-3.5-flash-lite",
-    contents=user_prompt_prefix + ask,
-    config=types.GenerateContentConfig(
-        system_instruction=system_prompt
-    )
-)
-
-print(response.text)
+if __name__ == "__main__":
+    main()
