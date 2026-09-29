@@ -1,4 +1,5 @@
 import streamlit as st
+from scraper import fetch_website_contents
 
 st.set_page_config(
     page_title="Gemini Website Summarizer",
@@ -24,6 +25,7 @@ summarize_button = st.button(
 
 if summarize_button:
     if url.strip():
-        st.info(f"URL entered: {url.strip()}")
+        website_content = fetch_website_contents(url.strip())
+        st.write(website_content)
     else:
         st.warning("Please enter a website URL.")
